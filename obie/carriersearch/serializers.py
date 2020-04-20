@@ -11,13 +11,6 @@ class StateSerializer(serializers.ModelSerializer):
         fields = ['name', 'id']
 
 
-class StateSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = State
-        fields = ['name', 'id']
-
-
 class PolicySerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -32,6 +25,12 @@ class CarrierSerializer(serializers.ModelSerializer):
         fields = ['name', 'id']
 
 
+class OfferingSerializer(serializers.ModelSerializer):
+    carrier = serializers.StringRelatedField(many=True)
+    
+    class Meta:
+        model = Offering
+        fields = ['carrier', 'id']
 
 
 # class StateSerializer(serializers.HyperlinkedModelSerializer):
@@ -52,7 +51,7 @@ class PolicySerializer(serializers.HyperlinkedModelSerializer):
         fields = ['name', 'id']
 
 
-class OfferingSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Offering
-        fields = ['policy', 'carrier', 'state']
+# class OfferingSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Offering
+#         fields = ['policy', 'carrier', 'state']

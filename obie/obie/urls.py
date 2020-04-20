@@ -30,5 +30,5 @@ urlpatterns = [
     path("states/", StateList.as_view(), name="state_list"),
     path("policies/", PolicyList.as_view(), name="policy_list"),
     path("carriers/", CarrierList.as_view(), name="carrier_list"),
-
+    path("offerings/", OfferingList.as_view(), name="offering_list"),
 ]

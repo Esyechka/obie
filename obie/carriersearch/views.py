@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse, Http404
 
 from rest_framework import viewsets
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from carriersearch.serializers import *
+import json
 
 # Create your views here.
 
@@ -51,7 +53,35 @@ class CarrierList(APIView):
         return Response(data)
 
 
+class OfferingList(APIView):
+    """
+    view for API endpoint "carriers/"
 
+    get:
+    parameters: 
+    Return a list all carriers.
+    """
+    def get(self, request):
+        # todo: handle errors such as misspelled states and policies
+        # todo: handle multiple policies, or if only one policy or state is provided
+        # todo: handle response via nested drf serializers
+        try:
+            policy_name = request.query_params.get("policy", None)
+            state_name = request.query_params.get("state", None)
+            if not policy_name or not state_name:
+                raise APIException("incorrect parameters provided")
+            policy = Policy.objects.get(name=policy_name.lower())
+            state = State.objects.get(name=state_name.upper())
+            if policy and state:
+                offerings = Offering.objects.filter(state=state, policy=policy)
+                carriers = [str(offering.carrier) for offering in offerings]
+                # data = OfferingSerializer(offerings, many=True).data
+                # return Response(data)
+                return JsonResponse(carriers, safe=False)
+        except:
+            raise APIException("There was a problem!")
+
+ 
 
 class StateViewSet(viewsets.ModelViewSet):
     """
