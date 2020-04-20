@@ -14,6 +14,7 @@ def csv_to_list():
 
 
 def create_offering(policy, carrier, state):
+    print(policy, carrier, state)
     offering = Offering.objects.get_or_create(
         policy=policy,
         carrier=carrier,
@@ -27,15 +28,19 @@ def create_objects(data_list):
         State.objects.get_or_create(name=elem)
     for row in data_list[1:]:
         # get create carrier
-        carrier = Carrier.objects.get_or_create(name=row[0].lower())
-        for index, elem in enumerate(row[1:]):
+        carrier, _ = Carrier.objects.get_or_create(name=row[0].lower())
+        parse_row = row[1:]
+        for index, elem in enumerate(parse_row):
             # todo: break this out into separate funciton. so messy
-            state = State.objects.get(name=data_list[0][index])
+            print(index, elem)
+            state = State.objects.get(name=data_list[0][index+1])
+            if elem.strip().lower == '':
+                create_offering(policy=None, carrier=carrier, state=state)
             if elem.strip().lower() == 'both' or elem.strip().lower() == 'fire':
-                policy = Policy.objects.get_or_create(name='fire')
+                policy, _ = Policy.objects.get_or_create(name='fire')
                 create_offering(policy=policy, carrier=carrier, state=state)
             if elem.strip().lower() == 'both' or elem.strip().lower() == 'auto':
-                policy = Policy.objects.get_or_create(name='auto')
+                policy, _ = Policy.objects.get_or_create(name='auto')
                 create_offering(policy=policy, carrier=carrier, state=state)
 
 
