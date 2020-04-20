@@ -1,28 +1,58 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from carriersearch.models import State, Policy, Carrier
+from carriersearch.models import State, Policy, Carrier, Offering
 
 
-class StateSerializer(serializers.HyperlinkedModelSerializer):
+class StateSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = State
-        fields = ['name']
+        fields = ['name', 'id']
+
+
+class StateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = State
+        fields = ['name', 'id']
+
+
+class PolicySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Policy
+        fields = ['name', 'id']
+
+
+class CarrierSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Carrier
+        fields = ['name', 'id']
+
+
+
+
+# class StateSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = State
+#         fields = ['name']
 
 
 class CarrierSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Carrier
-        fields = ['name']
+        fields = ['name', 'id']
 
 
 class PolicySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Policy
-        fields = ['name']
+        fields = ['name', 'id']
 
 
-class CarrierSerializer(serializers.HyperlinkedModelSerializer):
+class OfferingSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Carrier
+        model = Offering
         fields = ['policy', 'carrier', 'state']
